@@ -123,16 +123,6 @@ const USB_Descriptor_Configuration_t PROGMEM ConfigurationDescriptor = {
 			.HIDReportLength        = sizeof(JoystickReport)
 		},
 
-	.HID_ReportINEndpoint =
-		{
-			.Header                 = {.Size = sizeof(USB_Descriptor_Endpoint_t), .Type = DTYPE_Endpoint},
-
-			.EndpointAddress        = JOYSTICK_IN_EPADDR,
-			.Attributes             = (EP_TYPE_INTERRUPT | ENDPOINT_ATTR_NO_SYNC | ENDPOINT_USAGE_DATA),
-			.EndpointSize           = JOYSTICK_EPSIZE,
-			.PollingIntervalMS      = 0x05
-		},
-
 	.HID_ReportOUTEndpoint =
 		{
 			.Header                 = {.Size = sizeof(USB_Descriptor_Endpoint_t), .Type = DTYPE_Endpoint},
@@ -142,14 +132,57 @@ const USB_Descriptor_Configuration_t PROGMEM ConfigurationDescriptor = {
 			.EndpointSize           = JOYSTICK_EPSIZE,
 			.PollingIntervalMS      = 0x05
 		},
+		
+	.HID_ReportINEndpoint =
+		{
+			.Header                 = {.Size = sizeof(USB_Descriptor_Endpoint_t), .Type = DTYPE_Endpoint},
+
+			.EndpointAddress        = JOYSTICK_IN_EPADDR,
+			.Attributes             = (EP_TYPE_INTERRUPT | ENDPOINT_ATTR_NO_SYNC | ENDPOINT_USAGE_DATA),
+			.EndpointSize           = JOYSTICK_EPSIZE,
+			.PollingIntervalMS      = 0x05
+		}
+
+
 };
 
+typedef struct
+{
+	USB_Descriptor_Header_t Header;
+	wchar_t UnicodeString[18];
+} ATTR_PACKED USB_Descripter_cpp_workaround;
+
 // Language Descriptor Structure
-const USB_Descriptor_String_t PROGMEM LanguageString = USB_STRING_DESCRIPTOR_ARRAY(LANGUAGE_ID_ENG);
+//const USB_Descriptor_String_t PROGMEM LanguageString = USB_STRING_DESCRIPTOR_ARRAY(LANGUAGE_ID_ENG);
+const USB_Descripter_cpp_workaround PROGMEM LanguageString =
+{
+	{
+		sizeof(USB_Descriptor_Header_t) + sizeof(wchar_t[18]),
+		DTYPE_String
+	},
+	LANGUAGE_ID_ENG
+};
 
 // Manufacturer and Product Descriptor Strings
-const USB_Descriptor_String_t PROGMEM ManufacturerString = USB_STRING_DESCRIPTOR(L"HORI CO.,LTD.");
-const USB_Descriptor_String_t PROGMEM ProductString      = USB_STRING_DESCRIPTOR(L"POKKEN CONTROLLER");
+//const USB_Descriptor_String_t PROGMEM ManufacturerString = USB_STRING_DESCRIPTOR(L"HORI CO.,LTD.");
+const USB_Descripter_cpp_workaround PROGMEM ManufacturerString =
+{
+	{
+		sizeof(USB_Descriptor_Header_t) + sizeof(wchar_t[18]),
+		DTYPE_String
+	},
+	L"HORI CO.,LTD."
+};
+
+//const USB_Descriptor_String_t PROGMEM ProductString      = USB_STRING_DESCRIPTOR(L"POKKEN CONTROLLER");
+const USB_Descripter_cpp_workaround PROGMEM ProductString =
+{
+	{
+		sizeof(USB_Descriptor_Header_t) + sizeof(wchar_t[18]),
+		DTYPE_String
+	},
+	L"POKKEN CONTROLLER"
+};
 
 // USB Device Callback - Get Descriptor
 uint16_t CALLBACK_USB_GetDescriptor(
