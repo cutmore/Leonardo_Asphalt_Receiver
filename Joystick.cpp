@@ -21,6 +21,7 @@ these buttons for our use.
 #include "Joystick.h"
 #include <avr/io.h>
 #include <util/delay.h>
+#include "Arduino_Libraries/SoftwareSerial.cpp"
 
 #define set_bit(address,bit) (address |= (1<<bit)) // sets BIT to 1 in the register specified with ADDRESS
 #define clear_bit(address,bit) (address &= ~(1<<bit)) // sets BIT to 0 in the register specified with ADDRESS
